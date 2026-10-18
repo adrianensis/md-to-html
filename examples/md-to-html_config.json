@@ -1,0 +1,35 @@
+{
+    "input_directory": "./md",
+    "output_directory": "./html",
+    "css_file_path": "./notes.css",
+    "cache_path": "./metadata_cache.json",
+    "header_title": "Notes",
+    "navigation_title": "Index",
+    "navigation_sorted": true,
+    "navigation_can_toggle": true,
+    "toc_title": "Table of Contents",
+    "autogenerate_index": true,
+    "navigation_folders": ["Notes"],
+    "attachments_folders":
+    {
+        "Notes/attachments": "attachments"
+    },
+    "header_nav_items": [
+        {
+            "title": "Home",
+            "href": "/index.html"
+        },
+        {
+            "title": "Notes",
+            "href": "/Notes/Backlog.html"
+        },
+        {
+            "title": "GitHub",
+            "href": "https://github.com"
+        },
+        {
+            "title": "About",
+            "href": "/about.html"
+        }
+    ]
+}
