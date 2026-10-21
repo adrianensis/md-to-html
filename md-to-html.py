@@ -610,23 +610,23 @@ def render_navigation(tree, current_file_relative_path: Path, navigation_can_tog
 
 # Build desktop and mobile sidebars (index navigation and table of contents)
 def build_sidebars(config, dir_tree, current_file_relative_path: Path, toc):
-    # If navigation is disabled, only return the Table of Contents sidebar
-    if not config.get("navigation_enabled", True):
-        return "", "", html_tag("div", f'{html_tag("h3", config.get("toc_title", "TOC"), {"class": "sidebar-title"})}{html_tag_void("hr")}{toc}', {"class": "sidebar sidebar-right desktop"})
-
-    can_toggle = config.get("navigation_can_toggle", False)
-    navigation_nodes_list = render_navigation(dir_tree, current_file_relative_path, can_toggle).strip()
-
-    # Build desktop and mobile versions of the left sidebar (index) and right sidebar (TOC)
-    left_sidebar_html = html_tag("div", f'{html_tag("h3", "Index", {"class": "sidebar-title"})}{html_tag_void("hr")}{html_tag("nav", navigation_nodes_list)}', {"class": "sidebar sidebar-left desktop"})
-    left_sidebar_mobile_html = html_tag("div", html_tag("details", f'{html_tag("summary", "Index", {"class": "sidebar-title"})}{html_tag("nav", navigation_nodes_list)}'), {"class": "sidebar sidebar-left mobile"})
-
     toc_title = config.get("toc_title", "TOC")
     right_sidebar_mobile_html = html_tag("div", html_tag("details", f'{html_tag("summary", toc_title, {"class": "sidebar-title"})}{toc}'), {"class": "sidebar sidebar-right mobile"})
     right_sidebar_desktop_html = html_tag("div", f'{html_tag("h3", toc_title, {"class": "sidebar-title"})}{html_tag_void("hr")}{toc}', {"class": "sidebar sidebar-right desktop"})
 
-    return left_sidebar_html, left_sidebar_mobile_html, right_sidebar_mobile_html, right_sidebar_desktop_html
+    # If navigation is disabled, return empty strings for the left sidebars and keep the TOC for the right sidebars
+    if not config.get("navigation_enabled", True):
+        return "", "", right_sidebar_mobile_html, right_sidebar_desktop_html
 
+    can_toggle = config.get("navigation_can_toggle", False)
+    navigation_nodes_list = render_navigation(dir_tree, current_file_relative_path, can_toggle).strip()
+    
+    # Build desktop and mobile versions of the left sidebar (index) and right sidebar (TOC)
+    left_sidebar_html = html_tag("div", f'{html_tag("h3", "Index", {"class": "sidebar-title"})}{html_tag_void("hr")}{html_tag("nav", navigation_nodes_list)}', {"class": "sidebar sidebar-left desktop"})
+    left_sidebar_mobile_html = html_tag("div", html_tag("details", f'{html_tag("summary", "Index", {"class": "sidebar-title"})}{html_tag("nav", navigation_nodes_list)}'), {"class": "sidebar sidebar-left mobile"})
+    
+    return left_sidebar_html, left_sidebar_mobile_html, right_sidebar_mobile_html, right_sidebar_desktop_html
+    
 # Resolve custom friendly page titles and browser window titles from the configuration
 def resolve_page_titles(filename, config):
     page_title = filename[:-3]
